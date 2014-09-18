@@ -7,44 +7,68 @@ var pullDownEl, pullDownOffset, generatedCount = 0;
 
 var CurrentPageScroll;
 
-var current_tab=1;
+//var current_tab=1;
 var swapping=false;
 var $page_elems;
 var $wraper_pages;
 
+//var MobileApp = MobileApp || {};
+var MobileApp={
+   current_tab:1,
+   ancho_container_tabs:0,
+   init:function(){
+        this.width_screen=this.getViewportSize('w');
+        this.$body=$("body");
+        this.$mask=$("<div class='mask'></div>");
+        this.$page_elems=$('.page');
+        this.$wraper_pages=$('.pages');
+        this.$toggleSlideLeft=$(".toggle-slide-left");
+        this.$close_menu=$(".close-menu");
+        this.$tabs=$('ul.tabs').find('li');
+
+
+       this.$wraper_pages.css('width',this.$page_elems.length*this.width_screen);
+       this.$page_elems.css('width',this.width_screen);
+       this.$page_elems.css('height',this.getViewportSize('h')-100);
+
+       bind_gestures();
+       mobileScroll("#page"+current_tab);
+
+   },
+   bind_gestures:function(){
+       for (var i = this.$tabs.length - 1; i >= 0; i--) {
+           var thetab = this.$tabs[i];
+           var mc2 = new Hammer(thetab);
+           mc2.on("tap",pressTab);
+
+           console.log('tab_p'+(i+1)+" :: "+$tabs.eq(i).innerWidth());
+           ancho_container_tabs+=$tabs.eq(i).innerWidth();
+       }
+
+   },
+   getViewportSize:function(p){
+    if(p==='w')
+        return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    else if(p==='h')
+        return  Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+   },
+   aplyVerticalScroll:function(selector){
+       CurrentPageScroll = new IScroll(selector);
+   }
+};
+
+
             $(document).on('ready',function(){
+
+                MobileApp.init();
 
                 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
-                var $toggleSlideLeft=$(".toggle-slide-left"),
-                    $close_menu=$(".close-menu");
-
-                body = document.body;
-                $mask=$("<div class='mask'></div>");
+                MobileApp.$toggleSlideLeft.on("tap", showSideMenu);
+                MobileApp.$mask.on("tap", hideSideMenu);
+                MobileApp.$close_menu.on("tap", hideSideMenu);
 
 
-                $toggleSlideLeft.on("tap", showSideMenu);
-                $mask.on("tap", hideSideMenu);
-                $close_menu.on("tap", hideSideMenu);
-
-                /*      pullDownEl = document.getElementById('pullDown');
-                pullDownOffset = pullDownEl.offsetHeight;*/
-    /*            pullUpEl = document.getElementById('pullUp');
-                pullUpOffset = pullUpEl.offsetHeight;*/
-
-                var width_screen=getViewportSize('w');
-                $page_elems=$('.page');
-                $wraper_pages=$('.pages');
-
-                $tabs=$('ul.tabs').find('li');
-
-                var ancho_container_tabs=0;
-
-
-                $wraper_pages.css('width',$page_elems.length*width_screen);
-                $page_elems.css('width',width_screen);
-                $page_elems.css('height',getViewportSize('h')-100);
-                mobileScroll("#page"+current_tab);
 
                 for (var i = $tabs.length - 1; i >= 0; i--) {
                     var thetab = $tabs[i];
@@ -180,13 +204,7 @@ var $wraper_pages;
                 });
             }
 
-            function getViewportSize(p){
-                if(p==='w')
-                    return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-                else if(p==='h')
-                    return  Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-            }
             function underline_tab(index){
                 $el_li=$tabs.eq(index);
                 $el_li.siblings().removeClass('activo');

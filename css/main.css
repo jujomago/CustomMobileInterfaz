@@ -222,10 +222,16 @@ ul li{
 .cajita{
   background: rgb(241, 255, 168);
   margin-bottom: 10px;
-  height: 180px;
+  min-height: 180px;
     /*border: 2px solid red;*/
 }
-
+.cajita.gatos{
+     padding: 12px;
+    text-align: center;
+}
+.cajita.gatos p{
+    margin: 10px 0 0;
+}
 
 #wrapper{
 bottom: 0;
