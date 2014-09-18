@@ -1,8 +1,10 @@
 CustomMobileInterfaz
 ====================
 
-Una layout simple de tabs y pages que funcionan con swipe gestures
+Una layout simple de tabs y pages que funcionan con swipe gestures. SwipePages with Tabs.
+
+Al no existir en html5 este comportamiento en ningun framework solo en aplicaciones nativas, me decidi a probar y hacerlo, y resulto esto.
 
 
-El archivo que esta mas avanzado es gestures_jt.html y main_jt.js, funciona con hammer para las gestures, jquery.transform2d.js 
+El archivo que esta mas avanzado es gestures_jt.html y js/main_jt_better.js (mas organiazado), funciona con hammer para las gestures, jquery.transform2d.js 
 para las transiciones css3 y iscroll.js para el scroll con inercia en moviles.
